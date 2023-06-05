@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating a Private Packagist and Hosting on Github</title>
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Montserrat:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="bg-black py-4 mb-4">
+      <div class="container mx-auto px-4 md:px-0">
+        
+        <a href="/" class="site-title">
+          <picture class=inline mr-2>
+        <source type="image/jpeg" srcset="/img/d21p3w6A8m-40.jpeg 40w" sizes="40px">
+  <source type="image/webp" srcset="/img/d21p3w6A8m-40.webp 40w" sizes="40px">
+        <img
+          class="inline mr-2"
+          src="/img/d21p3w6A8m-40.jpeg"
+          alt="Code icon"
+          loading="lazy"
+          decoding="async" />
+    </picture> jimbarnes.dev
+        </a>
+        
+      </div>
+    </header>
+
+  <main class="container mx-auto px-4 md:px-0">
+    <div class="grid grid-flow-row md:grid-flow-col md:grid-cols-4 gap-x-12">
+  <article class="sm:col-1 md:col-span-3 md:pr-4">
+    <h1 class="page-title">Creating a Private Packagist and Hosting on Github</h1>
+    <div class="post-meta">
+      <span class="pub-date">Published: Tue Jun 06 2023</span>
+    </div>
+    
+    <picture class=mb-4>
+        <source type="image/jpeg" srcset="/img/CeHkwCuBzn-150.jpeg 150w, /img/CeHkwCuBzn-300.jpeg 300w, /img/CeHkwCuBzn-600.jpeg 600w, /img/CeHkwCuBzn-1024.jpeg 1024w" sizes="(min-width: 1280px) 1280pxpx, (min-width: 1024px) 1024px, (min-width: 640px) 640px, calc(93.68vw - 29px)">
+  <source type="image/webp" srcset="/img/CeHkwCuBzn-150.webp 150w, /img/CeHkwCuBzn-300.webp 300w, /img/CeHkwCuBzn-600.webp 600w, /img/CeHkwCuBzn-1024.webp 1024w" sizes="(min-width: 1280px) 1280pxpx, (min-width: 1024px) 1024px, (min-width: 640px) 640px, calc(93.68vw - 29px)">
+        <img
+          class="mb-4"
+          src="/img/CeHkwCuBzn-150.jpeg"
+          alt="Person typing on keyboard"
+          loading="lazy"
+          decoding="async" />
+    </picture>
+    
+    <p class="lead">If your organization has internal PHP packages that need to be distributed, but you don't feel comfortable hosting them on <a href="https://packagist.org/" target="_blank" rel="nofollow">Packagist</a>, hosting your own private packagist can be a good solution.</p>
+<p>This article will walk through the steps of setting up a private packagist repository hosted on <a href="https://pages.github.com/" target="_blank" rel="nofollow">GitHub Pages</a>, using the <a href="https://github.com/composer/satis" target="_blank" rel="nofollow">Satis package</a>. We'll go through setting up the project, adding some initial repositories and reviewing the basic commands for adding, updating and removing packages. In future posts, we'll work on automating updates using GitHub workflows.</p>
+<section id="repo-setup">
+  <h2>Setting Up the Respository</h2>
+  <p>To get setup, you'll want to ensure you have a <a href="https://www.php.net/supported-versions.php" target="_blank" rel="nofollow">supported version of PHP</a> and <a href="https://getcomposer.org/" target="_blank" rel="nofollow">composer</a> installed. Choose a project location, create the directory and run the initialization script provided by Satis.</p>
+  <pre class="language-bash"><code class="language-bash">$ <span class="token function">mkdir</span> ~/Projects/packagist-repo
+$ <span class="token function">composer</span> create-project composer/satis:dev-main ~/Projects/packagist-repo
+$ <span class="token builtin class-name">cd</span> ~/Projects/packagist-repo</code></pre>
+  <p>This will generate the boilerplate code necessary to manage the project. Since we will ultimatey be hosting this repository on Github, let's go ahead and initialize the repository and add a <code>.gitignore</code> file.</p>
+  <pre class="language-bash"><code class="language-bash">$ <span class="token function">git</span> init
+$ <span class="token function">touch</span> .gitignore</code></pre>
+  <p>There are a variety of <code>.gitignore</code> configurations you can use for PHP/composer projects, but for the sake of simplicity, the following should do the trick:</p>
+  <pre class="language-gitignore"><code class="language-gitignore"><span class="token entry string">.DS_Store</span>
+<span class="token entry string">composer.phar</span>
+<span class="token entry string"><span class="token punctuation">/</span>vendor<span class="token punctuation">/</span></span></code></pre>
+  <p>At this point we need to decide where our repository will be hosted. If you're not using a custom domain, the site will be hosted at a default location that uses the pattern <code>https://&lt;username&gt;.github.io/&lt;respository-name&gt;</code>. So with the username of "bobby" and the repository name "packagist-repo", the site would be hosted at <code>https://bobby.github.io/packagist-repo</code>. We'll use that username/repo combination in the example code below.</p>
+  <p>To initialize the repository, we'll use a built-in command:</p>
+  <pre class="language-bash"><code class="language-bash">$ php bin/satis init
+
+  Welcome to the Satis config generator
+
+This <span class="token builtin class-name">command</span> will guide you through creating your Satis config.
+
+Repository name: bobby/packagist-repo
+Home page: https://bobby.github.io/packagist-repo
+
+  Your configuration <span class="token function">file</span> successfully created<span class="token operator">!</span>
+
+You are ready to <span class="token function">add</span> your package repositories
+Use satis <span class="token function">add</span> repository-url to <span class="token function">add</span> them.</code></pre>
+  <p>This will create a <code>satis.json</code> file in the root of your project. This is where your repository configuration will be stored. It should look something like this:</p>
+  <pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"bobby/packagist-repo"</span><span class="token punctuation">,</span>
+    <span class="token property">"homepage"</span><span class="token operator">:</span> <span class="token string">"https://bobby.github.io/packagist-repo"</span><span class="token punctuation">,</span>
+    <span class="token property">"repositories"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"require-all"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span></code></pre>
+  <p>Since we want to build the site to the <code>docs/</code> directory by default, we can add this to our configuration file.</p>
+  <pre class="language-diff-json"><code class="language-diff-json">{
+<span class="token unchanged language-json"><span class="token prefix unchanged"> </span>   <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"bobby/packagist-repo"</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>   <span class="token property">"homepage"</span><span class="token operator">:</span> <span class="token string">"https://bobby.github.io/packagist-repo"</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>   <span class="token property">"repositories"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+</span><span class="token inserted-sign inserted language-json"><span class="token prefix inserted">+</span>   <span class="token property">"output-dir"</span><span class="token operator">:</span> <span class="token string">"docs/"</span><span class="token punctuation">,</span>
+</span><span class="token unchanged language-json"><span class="token prefix unchanged"> </span>   <span class="token property">"require-all"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+</span>}</code></pre>
+  <p>We're not ready to build our project and make our first commit. The site won't have any packages listed, but this will allow us to make sure everything is working as expect.</p>
+  <pre class="language-bash"><code class="language-bash">$ php bin/satis build
+<span class="token comment"># The command will target satis.json by default,</span>
+<span class="token comment"># and we've configured the output directory in the satis.json.</span>
+<span class="token comment"># If we needed to specify an output directory, we could use the following command:</span>
+$ php bin/satis build satis.json docs/</code></pre>
+  <p>After running the command, you should see a fully generated static site in the <code>docs/</code> directory!</p>
+  <pre class="language-bash"><code class="language-bash">docs/
+  include/
+    all<span class="token variable">$relativelylonghash</span>.json
+  index.html
+  packages.json</code></pre>
+  <p>It will include an index page and a directory named <code>include/</code> that will have the JSON files that describe each of your packages. Since we currently don't have any packages, only the <code>all$&lt;hash&gt;.json</code> file is currently in this directory. Let's go ahead and finish setting up by commiting our code to a repository (this assumes you've already setup the GitHub repository).</p>
+  <pre class="language-bash"><code class="language-bash">$ <span class="token function">git</span> <span class="token function">add</span> <span class="token parameter variable">--all</span>
+$ <span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"Initial commit"</span>
+$ <span class="token function">git</span> remote <span class="token function">add</span> origin git@github.com:bobby/packagist-repo.git
+$ <span class="token function">git</span> push <span class="token parameter variable">-u</span> <span class="token parameter variable">-f</span> origin main</code></pre>
+</section>
+<section id="github-pages">
+  <h2>Setting Up GitHub Pages</h2>
+  <p>Now that we have the repository and the initial HTML created, we need to get the site up and running on GitHub using their Pages feature. As noted above, for this example we'll be using the <code>docs/</code> directory to store our HTML files, which is a well established pattern for hosting GitHub pages. To get things setup, head to the Settings page of your repository and select "Pages" from the left navigation. You should be presented with the following options:</p>
+  <figure>
+    <picture class=mb-2 w-[75%]>
+        <source type="image/jpeg" srcset="/img/sz05gO2j98-150.jpeg 150w, /img/sz05gO2j98-300.jpeg 300w, /img/sz05gO2j98-600.jpeg 600w, /img/sz05gO2j98-1024.jpeg 1024w" sizes="undefined">
+  <source type="image/webp" srcset="/img/sz05gO2j98-150.webp 150w, /img/sz05gO2j98-300.webp 300w, /img/sz05gO2j98-600.webp 600w, /img/sz05gO2j98-1024.webp 1024w" sizes="undefined">
+        <img
+          class="mb-2 w-[75%]"
+          src="/img/sz05gO2j98-150.jpeg"
+          alt="Screenshot of the GitHub pages setting for a repository"
+          loading="lazy"
+          decoding="async" />
+    </picture>
+    <figcaption class="mb-4 text-gray-500">Screenshot of the GitHub Pages settings for a repository.</figcaption>
+  </figure>
+  <p>In order to configure our GitHub Pages, we're going to want to "Deploy from a branch" and in most cases we will want this to be the <code>main</code> branch. Once you've selected the branch, an additional dropdown will appear asking you which directory you want to serve up, with the <code>/(root)</code> directory being the default. Update this to <code>docs/</code>.</p>
+  <figure>
+    <picture class=mb-2 w-[75%]>
+        <source type="image/jpeg" srcset="/img/LnV30w1qEj-150.jpeg 150w, /img/LnV30w1qEj-300.jpeg 300w, /img/LnV30w1qEj-600.jpeg 600w, /img/LnV30w1qEj-1024.jpeg 1024w" sizes="undefined">
+  <source type="image/webp" srcset="/img/LnV30w1qEj-150.webp 150w, /img/LnV30w1qEj-300.webp 300w, /img/LnV30w1qEj-600.webp 600w, /img/LnV30w1qEj-1024.webp 1024w" sizes="undefined">
+        <img
+          class="mb-2 w-[75%]"
+          src="/img/LnV30w1qEj-150.jpeg"
+          alt="Screenshot of the branch and directory configuration"
+          loading="lazy"
+          decoding="async" />
+    </picture>
+    <figcaption class="mb-4 text-gray-500">Screenshot of the branch and directory configuration.</figcaption>
+  </figure>
+  <p>Once you've clicked the Save button, the initialization process will begin. Once it has completed, you should see a link to your live site on the GitHub Pages setting page.</p>
+</section>
+<section id="conclusion">
+  <h2>Closing Thoughts</h2>
+  <p>If you've made it this far, congratulations! You now have a working packagist repository hosted on GitHub pages. Of course, we haven't yet added any packages to our repository, but we will be knocking that out in my next post, along with some basic automation using GitHub workflows.</p>
+  <p>To review, we were able to accomplish the following in this article:</p>
+  <ul>
+    <li><a href="#repo-setup">Initialize and configure a Satis repository for tracking our composer packages</a></li>
+    <li><a href="#github-pages">Setup and deploy our repository to GitHub Pages so it can be accessed by composer projects</a></li>
+  </ul>
+</section>
+
+  </article>
+  <aside class="sm:col-span-1 md:col-span-1 mt-4">
+    <h2>Other Posts</h2>
+    <ul>
+    
+      
+    
+      
+      <li><a href="/posts/automating-packagist-github/">Adding, Removing and Automating Packages on your Private Packagist</a></li>
+      
+    
+    </ul>
+  </aside>
+</div>
+
+  </main>
+    <footer class="bg-black mt-8 align-bottom">
+      <div class="container mx-auto">
+        <p class="text-white py-4 mb-0 text-center">&copy 2023 Jim Barnes</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
