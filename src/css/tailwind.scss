@@ -55,11 +55,12 @@ h2 {
  **/
 
 pre {
-  @apply mb-4 !important;
+  @apply mb-4 overflow-auto !important;
 }
 
 code {
   @apply text-red-600;
+  white-space: pre-wrap !important;
 }
 
 .token.deleted {

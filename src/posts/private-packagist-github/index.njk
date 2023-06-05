@@ -92,12 +92,12 @@ $ git push -u -f origin main
   <h2>Setting Up GitHub Pages</h2>
   <p>Now that we have the repository and the initial HTML created, we need to get the site up and running on GitHub using their Pages feature. As noted above, for this example we'll be using the <code>docs/</code> directory to store our HTML files, which is a well established pattern for hosting GitHub pages. To get things setup, head to the Settings page of your repository and select "Pages" from the left navigation. You should be presented with the following options:</p>
   <figure>
-    {% image "mb-2 w-[75%]", "./src/posts/private-packagist-github/gh-pages.jpg", "Screenshot of the GitHub pages setting for a repository" %}
+    {% image "mb-2 w-9/12", "./src/posts/private-packagist-github/gh-pages.jpg", "Screenshot of the GitHub pages setting for a repository" %}
     <figcaption class="mb-4 text-gray-500">Screenshot of the GitHub Pages settings for a repository.</figcaption>
   </figure>
   <p>In order to configure our GitHub Pages, we're going to want to "Deploy from a branch" and in most cases we will want this to be the <code>main</code> branch. Once you've selected the branch, an additional dropdown will appear asking you which directory you want to serve up, with the <code>/(root)</code> directory being the default. Update this to <code>docs/</code>.</p>
   <figure>
-    {% image "mb-2 w-[75%]", "./src/posts/private-packagist-github/gh-pages-branch-dir.jpg", "Screenshot of the branch and directory configuration" %}
+    {% image "mb-2 w-9/12", "./src/posts/private-packagist-github/gh-pages-branch-dir.jpg", "Screenshot of the branch and directory configuration" %}
     <figcaption class="mb-4 text-gray-500">Screenshot of the branch and directory configuration.</figcaption>
   </figure>
   <p>Once you've clicked the Save button, the initialization process will begin. Once it has completed, you should see a link to your live site on the GitHub Pages setting page.</p>
