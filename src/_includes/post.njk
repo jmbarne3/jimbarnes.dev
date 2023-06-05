@@ -1,0 +1,25 @@
+---
+layout: base.njk
+---
+<div class="grid grid-flow-row md:grid-flow-col md:grid-cols-4 gap-x-12">
+  <article class="sm:col-1 md:col-span-3 md:pr-4">
+    <h1 class="page-title">{{ title }}</h1>
+    <div class="post-meta">
+      <span class="pub-date">Published: {{ page.date.toDateString() }}</span>
+    </div>
+    {% if hero %}
+    {% image "mb-4", hero, heroalt, "(min-width: 1280px) 1280pxpx, (min-width: 1024px) 1024px, (min-width: 640px) 640px, calc(93.68vw - 29px)" %}
+    {% endif %}
+    {{ content | safe }}
+  </article>
+  <aside class="sm:col-span-1 md:col-span-1 mt-4">
+    <h2>Other Posts</h2>
+    <ul>
+    {% for post in collections.post %}
+      {% if post.url != page.url %}
+      <li><a href="{{ post.url }}">{{ post.data.title }}</a></li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+  </aside>
+</div>

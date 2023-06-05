@@ -1,0 +1,84 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/**
+ * Variables
+ **/
+:root {
+  --brand-color: #7683ff;
+  --brand-color-darker: #3f52ff;
+}
+
+p {
+  @apply pb-4 font-sans;
+}
+
+a {
+  @apply text-[var(--brand-color)] hover:text-[var(--brand-color-darker)] hover:underline;
+}
+
+.lead {
+  @apply text-2xl font-light font-serif;
+}
+
+h2 {
+  @apply text-3xl mb-4;
+}
+
+.subsection-heading {
+  @apply text-lg font-bold;
+}
+
+.card {
+  @apply bg-gray-200 drop-shadow-md p-4 rounded-md;
+}
+
+.site-title {
+  @apply text-4xl text-white hover:text-[#7683ff] transition-colors duration-500;
+}
+
+.post-title {
+  @apply text-xl text-blue-800 mb-2 inline-block;
+}
+
+.page-title {
+  @apply text-4xl mb-4 inline-block border-b-2 font-bold;
+}
+
+.post-meta {
+  @apply mb-4 text-gray-500;
+}
+
+/**
+ * Code formatting styles
+ **/
+
+pre {
+  @apply mb-4 !important;
+}
+
+code {
+  @apply text-red-600;
+}
+
+.token.deleted {
+  background-color: hsl(350deg 100% 88% / 47%);
+}
+.token.inserted {
+  background-color: hsl(120deg 73% 75% / 35%);
+}
+
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+/* Optional: full-width background color */
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+	display: block;
+}

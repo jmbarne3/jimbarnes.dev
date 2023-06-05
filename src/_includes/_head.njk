@@ -1,0 +1,27 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Montserrat:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="bg-black py-4 mb-4">
+      <div class="container mx-auto px-4 md:px-0">
+        {% if page.url == '/' %}
+        <h1>
+          <a href="/" class="site-title">
+            {% image "inline mr-2", "./src/img/shared/code.png", "Code icon", "40px", "40px" %} jimbarnes.dev
+          </a>
+        </h1>
+        {% else %}
+        <a href="/" class="site-title">
+          {% image "inline mr-2", "./src/img/shared/code.png", "Code icon", "40px", "40px" %} jimbarnes.dev
+        </a>
+        {% endif %}
+      </div>
+    </header>

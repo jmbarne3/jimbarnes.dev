@@ -1,0 +1,33 @@
+{
+  "name": "jimbarnes.dev",
+  "version": "1.0.0",
+  "description": "My personal code blog.",
+  "main": "index.js",
+  "scripts": {
+    "build": "eleventy --serve & tailwindcss -i ./src/css/tailwind.scss -o ./_site/css/style.css --watch",
+    "build:prod": "eleventy & tailwindcss -i ./src/css/tailwind.scss -o ./_site/css/style.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmbarne3/jimbarnes.dev.git"
+  },
+  "keywords": [
+    "node",
+    "11ty",
+    "blog"
+  ],
+  "author": "Jim Barnes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmbarne3/jimbarnes.dev/issues"
+  },
+  "homepage": "https://github.com/jmbarne3/jimbarnes.dev#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-img": "^3.1.0",
+    "tailwindcss": "^3.3.2"
+  },
+  "dependencies": {
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0"
+  }
+}
