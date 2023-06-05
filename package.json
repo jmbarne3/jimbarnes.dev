@@ -4,7 +4,7 @@
   "description": "My personal code blog.",
   "main": "index.js",
   "scripts": {
-    "build":"env NODE_ENV=production npx eleventy --pathprefix 'jimbarnes.dev' & tailwindcss -i ./src/css/tailwind.scss -o ./_site/css/style.css --minify",
+    "build":"env NODE_ENV=production eleventy --pathprefix 'jimbarnes.dev' && tailwindcss -i ./src/css/tailwind.scss -o ./_site/css/style.css --minify",
     "build:watch": "eleventy --serve & tailwindcss -i ./src/css/tailwind.scss -o ./_site/css/style.css --watch"
   },
   "repository": {
