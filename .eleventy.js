@@ -22,11 +22,11 @@ module.exports = function (eleventyConfig) {
 
     return `<picture class=${classes}>
       ${Object.values(metadata).map(imageFormat => {
-        return `  <source type="${imageFormat[0].sourceType}" srcset="${imageFormat.map(entry => entry.srcset).join(", ")}" sizes="${sizes}">`;
+        return `  <source type="${imageFormat[0].sourceType}" srcset="${imageFormat.map(entry => eleventyConfig.getFilter('url')(entry.srcset)).join(", ")}" sizes="${sizes}">`;
       }).join("\n")}
         <img
           class="${classes}"
-          src="${lowsrc.url}"
+          src="${eleventyConfig.getFilter('url')(lowsrc.url)}"
           alt="${alt}"
           loading="lazy"
           decoding="async" />
