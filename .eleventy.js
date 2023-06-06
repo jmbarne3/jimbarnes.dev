@@ -81,13 +81,34 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter('getTagUrl', getTagUrl);
 
+  async function getImageUrl(src, size=600) {
+    let metadata = await Image(src, {
+      widths: [150, 300, 600, 1024],
+      formats: ["jpeg", "webp"],
+      outputDir: './_site/img/'
+    });
+
+    let image;
+    if (size) {
+      image = metadata.webp.find(x => x.width >= size);
+    } else {
+      image = metadata.webp[0];
+    }
+
+    return eleventyConfig.getFilter('url')(image.url);
+  }
+
+  eleventyConfig.addFilter('getImageUrl', getImageUrl);
+
   // SEO Configuration
   eleventyConfig.addPlugin(pluginSEO, {
     title: 'Jim Barnes Development',
     description: 'The personal blog of Jim Barnes, a web developer who lives in Central Florida.',
     url: 'https://jimbarnes.dev',
     author: 'Jim Barnes',
-    image: './src/img/shared/code.png'
+    options: {
+      imageWithBaseUrl: true,
+    }
   });
 
   return {

@@ -1,5 +1,7 @@
 ---
 layout: base.njk
+eleventyComputed:
+  image: "{{ hero | getImageUrl }}"
 ---
 <div class="grid grid-flow-row md:grid-flow-col md:grid-cols-4 gap-x-12">
   <article class="sm:col-1 md:col-span-3 md:pr-4 w-full">
@@ -7,8 +9,8 @@ layout: base.njk
     <div class="post-meta">
       <span class="pub-date">Published: {{ page.date | readableDate }}</span>
     </div>
-    {% if image %}
-    {% image "mb-4", image, image_alt, "(min-width: 1280px) 1280pxpx, (min-width: 1024px) 1024px, (min-width: 640px) 640px, calc(93.68vw - 29px)" %}
+    {% if hero %}
+    {% image "mb-4", hero, image_alt, "(min-width: 1280px) 1280pxpx, (min-width: 1024px) 1024px, (min-width: 640px) 640px, calc(93.68vw - 29px)" %}
     {% endif %}
     {{ content | safe }}
   </article>

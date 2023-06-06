@@ -10,7 +10,7 @@ eleventyImport:
   {% for post in collections.currentPosts.reverse() %}
   <article class="card">
     {% if post.data.image %}
-    {% image "mb-2 rounded-md", post.data.image, post.data.image_alt, "100vw" %}
+    {% image "mb-2 rounded-md", post.data.hero, post.data.image_alt, "100vw" %}
     {% endif %}
     <a href="{{ post.url | url }}"><span class="post-title">{{ post.data.title }}</span></a>
     <p class="post-deck">{{ post.data.excerpt }}</p>
