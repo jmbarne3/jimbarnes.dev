@@ -90,9 +90,9 @@ module.exports = function (eleventyConfig) {
 
     let image;
     if (size) {
-      image = metadata.webp.find(x => x.width >= size);
+      image = metadata.jpeg.find(x => x.width >= size);
     } else {
-      image = metadata.webp[0];
+      image = metadata.jpeg[0];
     }
 
     return eleventyConfig.getFilter('url')(image.url);
