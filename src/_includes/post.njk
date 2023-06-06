@@ -7,8 +7,8 @@ layout: base.njk
     <div class="post-meta">
       <span class="pub-date">Published: {{ page.date | readableDate }}</span>
     </div>
-    {% if hero %}
-    {% image "mb-4", hero, heroalt, "(min-width: 1280px) 1280pxpx, (min-width: 1024px) 1024px, (min-width: 640px) 640px, calc(93.68vw - 29px)" %}
+    {% if image %}
+    {% image "mb-4", image, image_alt, "(min-width: 1280px) 1280pxpx, (min-width: 1024px) 1024px, (min-width: 640px) 640px, calc(93.68vw - 29px)" %}
     {% endif %}
     {{ content | safe }}
   </article>

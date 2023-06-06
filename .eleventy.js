@@ -1,5 +1,6 @@
 const Image = require("@11ty/eleventy-img");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
+const pluginSEO = require("eleventy-plugin-seo");
 const { DateTime } = require("luxon");
 
 module.exports = function (eleventyConfig) {
@@ -79,6 +80,15 @@ module.exports = function (eleventyConfig) {
   }
 
   eleventyConfig.addFilter('getTagUrl', getTagUrl);
+
+  // SEO Configuration
+  eleventyConfig.addPlugin(pluginSEO, {
+    title: 'Jim Barnes Development',
+    description: 'The personal blog of Jim Barnes, a web developer who lives in Central Florida.',
+    url: 'https://jimbarnes.dev',
+    author: 'Jim Barnes',
+    image: './src/img/shared/code.png'
+  });
 
   return {
     dir: {
